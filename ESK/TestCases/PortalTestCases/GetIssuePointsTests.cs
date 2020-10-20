@@ -9,25 +9,25 @@ namespace SapphireApiFramework
     public class GetIssuePointsTests : PortalEndpoints
     {
         [TestCase(TestName = "400, Отсутствует Организация с указанным идентификатором")]
-        public async Task ResponseCodeis400()
+        public void SpeicifiedOrgIsNotPresent()
         { 
-            var response = await GetIssuePoints(new EndpointCallData("?uid=", 2, Enviroment, Auth));
+            var response = GetIssuePoints(new EndpointCallData("?uid=", 2, Enviroment, Auth));
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [TestCase(TestName = "400, Отсутствует ?uid= и значение uid")]
-        public async Task NoUidParam()
+        public void NoUidParam()
         {
-            var response = await GetIssuePoints(new EndpointCallData(Enviroment, Auth));
+            var response = GetIssuePoints(new EndpointCallData(Enviroment, Auth));
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [TestCase(TestName = "400, Отсутствует значение uid")]
-        public async Task NoUidValue()
+        public void NoUidValue()
         {
-            var response = await GetIssuePoints(new EndpointCallData("?uid=", Enviroment, Auth));
+            var response = GetIssuePoints(new EndpointCallData("?uid=", Enviroment, Auth));
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
