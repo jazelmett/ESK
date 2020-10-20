@@ -10,94 +10,98 @@ namespace SapphireApiFramework
         public AuthTokens Auth = AuthTokens.portalFive;
 
 
-        public IRestResponse GetIssuePointOrganizations(EndpointCallData callParams)
+        public Task<IRestResponse> GetIssuePointOrganizations(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "IssuePointOrganizations");
         }
 
-        public IRestResponse GetIssuePoints(EndpointCallData callParams)
+        public Task<IRestResponse> GetIssuePoints(EndpointCallData callParams)
         {
             if (callParams.UidValue == 0 && callParams.UidParam == null) 
                 return GetRequestInit(callParams, Method.GET, $"IssuePoints");
             else if (callParams.UidValue == 0) 
-                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}");
+                return GetRequestInit
+                    (callParams, Method.GET, $"IssuePoints{callParams.UidParam}");
             else
-                return GetRequestInit (callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.UidValue}");
+                return GetRequestInit
+                    (callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.UidValue}");
         }
 
-        public IRestResponse GetListAcceptors(EndpointCallData callParams)
+        public Task<IRestResponse> GetListAcceptors(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "ListAcceptors");
         }
 
-        public IRestResponse GetAcceptorBranches(EndpointCallData callParams)
+        public Task<IRestResponse> GetAcceptorBranches(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, $"AcceptorBranches{callParams.UidParam}{callParams.UidValue}");
         }
 
-        public IRestResponse GetLoyaltyProgramBranches(EndpointCallData callParams)
+        public Task<IRestResponse> GetLoyaltyProgramBranches(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, $"LoyaltyProgramBranches{callParams.UidParam}{callParams.UidValue}");
         }
 
-        public IRestResponse GetListLoyaltyPrograms(EndpointCallData callParams)
+        public Task<IRestResponse> GetListLoyaltyPrograms(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, $"ListLoyaltyPrograms");
         }
 
-        public IRestResponse GetListLocalitites(EndpointCallData callParams)
+        public Task<IRestResponse> GetListLocalitites(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "ListLocalities");
         }
 
-        public IRestResponse GetListAcceptorCategories(EndpointCallData callParams)
+        public Task<IRestResponse> GetListAcceptorCategories(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "ListAcceptorCategories");
         }
 
-        public IRestResponse GetKeyPartners(EndpointCallData callParams)
+        public Task<IRestResponse> GetKeyPartners(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "KeyPartners");
         }
 
-        public IRestResponse GetListFeedbackThemes(EndpointCallData callParams)
+        public Task<IRestResponse> GetListFeedbackThemes(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "ListFeedbackThemes");
         }
 
-        public IRestResponse GetListStatePrograms(EndpointCallData callParams)
+        public Task<IRestResponse> GetListStatePrograms(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "ListStatePrograms");
         }
 
-        public IRestResponse GetListStateAssignments(EndpointCallData callParams)
+        public Task<IRestResponse> GetListStateAssignments(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "ListStateAssignments");
         }
 
-        public IRestResponse GetListExpenseLiabilities(EndpointCallData callParams)
+        public Task<IRestResponse> GetListExpenseLiabilities(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "ListStateAssignments");
         }
 
-        public IRestResponse GetFile(EndpointCallData callParams)
+        public Task<IRestResponse> GetFile(EndpointCallData callParams)
         {
             var response = GetRequestInit(callParams, Method.GET, $"File{callParams.UidParam}{callParams.GetFileUid}");
-            SaveResponseToFile(response);
+            SaveResponseToFile(response.Result);
             return response;
         }
 
-        public IRestResponse PostFeedback(EndpointCallData callParams)
+        public async Task<IRestResponse> PostFeedback(EndpointCallData callParams)
         {
             if (callParams.FilePath == null)
-                return PostRequestInitWithParams(callParams, Method.POST, "Feedback", callParams.BodyParams);
+                return await PostRequestInitWithParams
+                    (callParams, Method.POST, "Feedback", callParams.BodyParams);
             else
-                return PostRequestInitWithParamAndFile(callParams, Method.POST, "Feedback", callParams.BodyParams, callParams.FilePath);
+                return await PostRequestInitWithParamAndFile
+                    (callParams, Method.POST, "Feedback", callParams.BodyParams, callParams.FilePath);
         }
 
-        public IRestResponse PostRegisterClient(EndpointCallData callParams)
+        public async Task<IRestResponse> PostRegisterClient(EndpointCallData callParams)
         {
-            return PostRequestInitWithBody(callParams, Method.POST, "RegisterClient", callParams.RequestBody);
+            return await PostRequestInitWithBody(callParams, Method.POST, "RegisterClient", callParams.RequestBody);
         }
     }
 }

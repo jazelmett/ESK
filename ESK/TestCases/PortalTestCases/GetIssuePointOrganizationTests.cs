@@ -8,10 +8,10 @@ namespace SapphireApiFramework
     [Parallelizable(ParallelScope.All)]
     public class GetIssuePointOrganizationTests : PortalEndpoints
     {
-        [TestCase(TestName = "200, Œ ")]
-        public void ResponseCodeIs200()
+        [TestCase(TestName = "400")]
+        public async Task ResponseCodeIs200()
         {
-            var response = GetIssuePointOrganizations(new EndpointCallData(Enviroment, Auth));
+            var response = await GetIssuePointOrganizations(new EndpointCallData(Enviroment, Auth));
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }

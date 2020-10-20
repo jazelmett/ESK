@@ -103,19 +103,33 @@ namespace SapphireApiFramework
             FilePath = filePath;
         }
 
-        protected static IRestResponse GetRequestInit
+
+        public const string bankStage = "http://webservice.uralsoccard.ru:9696/IP/API/1_0/";
+        public const string portalStage = "http://webservice.uralsoccard.ru:9698/IP/API/1_0/";
+        public const string acceptorStage = "http://webservice.uralsoccard.ru:9695/IP/API/1_0/";
+        public const string sbussStage = "http://webservice.uralsoccard.ru:9695/IP/API/1_0/";
+        public const string lkStage = "http://webservice.uralsoccard.ru:9697/IP/API/1_0/";
+        public const string bankTest = "http://test-esk-api.nposapfir.ru:17065/IP/API/1_0/";
+        public const string portalTest = "http://webservice.uralsoccard.ru:17055/IP/API/1_0/";
+        public const string acceptorTest = "http://test-esk-api.nposapfir.ru:17075/IP/API/1_0/";
+        public const string sbussTest = "http://test-esk-api.nposapfir.ru:17105/IP/API/1_0/";
+        public const string lkTest = "not implemented";
+
+        public const string portalFive = "4493ed42-a53d-4e61-8601-4e3c0ecb215a";
+
+        protected async static Task<IRestResponse> GetRequestInit
             (EndpointCallData callParams, Method httpMethod, string relativeAddress)
         {
             var api = new RestClient(callParams.baseAddress);
             var request = new RestRequest(relativeAddress, httpMethod);
             request.AddHeader("Authorization", callParams.authValue);
-            var response = api.Execute(request);
+            var response = await api.ExecuteAsync(request);
             Console.Out.WriteLine(ResponseInfo(response));
             Console.Out.WriteLine(response.Content);
             return response;
         }
 
-        protected static IRestResponse PostRequestInitWithBody
+        protected async static Task<IRestResponse> PostRequestInitWithBody
             (EndpointCallData callParams, Method httpMethod, string relativeAddress, object jsonBody)
         {
             var api = new RestClient(callParams.baseAddress);
@@ -123,13 +137,13 @@ namespace SapphireApiFramework
             request.AddHeader("Authorization", callParams.authValue);
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(jsonBody);
-            var response = api.Execute(request);
+            var response = await api.ExecuteAsync(request);
             Console.Out.WriteLine(ResponseInfo(response));
             Console.Out.WriteLine(response.Content);
             return response;
         }
 
-        protected static IRestResponse PostRequestInitWithParamAndFile
+        protected async static Task<IRestResponse> PostRequestInitWithParamAndFile
             (EndpointCallData callParams, Method httpMethod, string relativeAddress,
             Dictionary<string, string> parameters, Dictionary<string, string> filePaths)
         {
@@ -138,13 +152,13 @@ namespace SapphireApiFramework
             request.AddHeader("Authorization", callParams.authValue);
             foreach (var parameter in parameters) request.AddParameter(parameter.Key, parameter.Value);
             foreach (var path in filePaths) request.AddFile(path.Key, path.Value);
-            var response = api.Execute(request);
-            Console.Out.WriteLine(ResponseInfo(response));
-            Console.Out.WriteLine(response.Content);
+            var response = await api.ExecuteAsync(request);
+/*            Console.Out.WriteLine(ResponseInfo(response));
+            Console.Out.WriteLine(response.Content);*/
             return response;
         }
 
-        protected static IRestResponse PostRequestInitWithParams
+        protected async static Task<IRestResponse> PostRequestInitWithParams
             (EndpointCallData callParams, Method httpMethod, string relativeAddress, 
             Dictionary<string, string> parameters)
         {
@@ -152,9 +166,9 @@ namespace SapphireApiFramework
             var request = new RestRequest(relativeAddress, httpMethod) { AlwaysMultipartFormData = true };
             request.AddHeader("Authorization", callParams.authValue);
             foreach (var parameter in parameters) request.AddParameter(parameter.Key, parameter.Value);
-            var response = api.Execute(request);
-            Console.Out.WriteLine(ResponseInfo(response));
-            Console.Out.WriteLine(response.Content);
+            var response = await api.ExecuteAsync(request);
+/*            Console.Out.WriteLine(ResponseInfo(response));
+            Console.Out.WriteLine(response.Content);*/
             return response;
         }
 
@@ -182,19 +196,6 @@ namespace SapphireApiFramework
                 $"\nResponse Message: {(int)response.StatusCode} {response.StatusDescription}" +
                 $"\nReponse Content-Type: {response.ContentType}";
         }
-
-        public const string bankStage = "http://webservice.uralsoccard.ru:9696/IP/API/1_0/";
-        public const string portalStage = "http://webservice.uralsoccard.ru:9698/IP/API/1_0/";
-        public const string acceptorStage = "http://webservice.uralsoccard.ru:9695/IP/API/1_0/";
-        public const string sbussStage = "http://webservice.uralsoccard.ru:9695/IP/API/1_0/";
-        public const string lkStage = "http://webservice.uralsoccard.ru:9697/IP/API/1_0/";
-        public const string bankTest = "http://test-esk-api.nposapfir.ru:17065/IP/API/1_0/";
-        public const string portalTest = "http://webservice.uralsoccard.ru:17055/IP/API/1_0/";
-        public const string acceptorTest = "http://test-esk-api.nposapfir.ru:17075/IP/API/1_0/";
-        public const string sbussTest = "http://test-esk-api.nposapfir.ru:17105/IP/API/1_0/";
-        public const string lkTest = "not implemented";
-
-        public const string portalFive = "4493ed42-a53d-4e61-8601-4e3c0ecb215a";
 
         public string FileKeyName { get; set; }
         public object RequestBody { get; set; }

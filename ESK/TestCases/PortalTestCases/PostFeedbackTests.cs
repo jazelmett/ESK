@@ -9,8 +9,8 @@ namespace SapphireApiFramework
     [Parallelizable(ParallelScope.All)]
     class APostFeedbackTests : PortalEndpoints
     {
-        [TestCase(TestName = "400, Размер файла > 14mb")]
-        public void ResponseCodeIs400WithLargeFile()
+        [TestCase(TestName = "400, С файлом > 14mb")]
+        public async Task ResponseCodeIs400WithLargeFile()
         {
             var parameters = new Dictionary<string, string>
             {
@@ -30,13 +30,13 @@ namespace SapphireApiFramework
 
             var callData = new EndpointCallData(parameters, files, Enviroment, Auth);
 
-            var response = PostFeedback(callData);
+            var response = await PostFeedback(callData);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
         [Parallelizable(ParallelScope.All)]
         [TestCase(TestName = "200, Без файла.")]
-        public void ResponseCodeis200NoFilePassed()
+        public async Task ResponseCodeis200NoFilePassed()
         {
             var parameters = new Dictionary<string, string>
             {
@@ -51,7 +51,7 @@ namespace SapphireApiFramework
 
             var callData = new EndpointCallData(parameters, Enviroment, Auth);
 
-            var response = PostFeedback(callData);
+            var response = await PostFeedback(callData);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
