@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using RestSharp;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace SapphireApiFramework
 {

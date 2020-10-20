@@ -9,7 +9,6 @@ namespace SapphireApiFramework
         public Enviroment Enviroment = Enviroment.portalStage;
         public AuthTokens Auth = AuthTokens.portalFive;
 
-
         public IRestResponse GetIssuePointOrganizations(EndpointCallData callParams)
         {
             return GetRequestInit(callParams, Method.GET, "IssuePointOrganizations");
@@ -17,12 +16,12 @@ namespace SapphireApiFramework
 
         public IRestResponse GetIssuePoints(EndpointCallData callParams)
         {
+            if (callParams.UidValue == 0)
+                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}");
             if (callParams.UidValue == 0 && callParams.UidParam == null) 
                 return GetRequestInit(callParams, Method.GET, $"IssuePoints");
-            else if (callParams.UidValue == 0) 
-                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}");
-            else
-                return GetRequestInit (callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.UidValue}");
+
+            return GetRequestInit (callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.UidValue}");
         }
 
         public IRestResponse GetListAcceptors(EndpointCallData callParams)

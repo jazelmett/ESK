@@ -7,7 +7,7 @@ using RestSharp;
 namespace SapphireApiFramework
 {
     [Parallelizable(ParallelScope.All)]
-    class APostFeedbackTests : PortalEndpoints
+    class PostFeedbackTests : PortalEndpoints
     {
         [TestCase(TestName = "400, Размер файла > 14mb")]
         public void ResponseCodeIs400WithLargeFile()
@@ -34,7 +34,7 @@ namespace SapphireApiFramework
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
-        [Parallelizable(ParallelScope.All)]
+
         [TestCase(TestName = "200, Без файла.")]
         public void ResponseCodeis200NoFilePassed()
         {
