@@ -8,10 +8,10 @@ namespace SapphireApiFramework
     [Parallelizable(ParallelScope.All)]
     class GetFileTests : PortalEndpoints
     {
-        [TestCase(TestName = "200, ok")]
-        public async Task ResponseCodeIs200()
+        [TestCase(TestName = "200, Файл загружен")]
+        public void ResponseCodeIs200()
         {
-            var response = await GetFile
+            var response = GetFile
                 (new EndpointCallData("?uid=", "d1098f29-8fae-47b1-a777-71a800dc85f8", Enviroment, Auth));
  
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

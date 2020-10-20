@@ -8,7 +8,7 @@ namespace SapphireApiFramework
     class PostRegisterClient : PortalEndpoints
     {
         [TestCase(TestName = "400, Клиент с указанным СНИЛС уже зарегистрирован")]
-        public async Task CustomerWithSpecifiedSnilsAlreadyRegistered()
+        public void CustomerWithSpecifiedSnilsAlreadyRegistered()
         {
             var payload = new RegisterClientJson
             {
@@ -43,7 +43,7 @@ namespace SapphireApiFramework
                 }
             };
 
-            var response = await PostRegisterClient(new EndpointCallData(payload, Enviroment, Auth));
+            var response = PostRegisterClient(new EndpointCallData(payload, Enviroment, Auth));
 
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
