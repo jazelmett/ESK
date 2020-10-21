@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Schema.Generation;
 using NUnit.Framework;
 
 namespace SapphireApiFramework
@@ -43,8 +45,9 @@ namespace SapphireApiFramework
                 }
             };
 
-            var response = PostRegisterClient(new EndpointCallData(payload, Enviroment, Auth));
+            var callData = new EndpointCallData(payload, Enviroment, Auth);
 
+            var response = PostRegisterClient(callData);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }

@@ -18,10 +18,10 @@ namespace SapphireApiFramework
         {
             if (callParams.UidValue == 0)
                 return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}");
-            if (callParams.UidValue == 0 && callParams.UidParam == null) 
+            else if (callParams.UidValue == 0 && callParams.UidParam == null)
                 return GetRequestInit(callParams, Method.GET, $"IssuePoints");
-
-            return GetRequestInit (callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.UidValue}");
+            else
+                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.UidValue}");
         }
 
         public IRestResponse GetListAcceptors(EndpointCallData callParams)
