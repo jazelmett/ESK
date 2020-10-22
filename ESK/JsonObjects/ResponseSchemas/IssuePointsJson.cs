@@ -5,14 +5,14 @@ using System.Text;
 
 namespace SapphireApiFramework
 {
-    class IssuePointsJson
+   /* class IssuePointsJson
     {
         public string id;
         public string name;
         public string address;
         public string phone;
         public string operationMode;
-        public Geolocation[] geolocation;
+        public Geolocation geolocation;
         public int city;
         public Organization organization;
     }
@@ -30,5 +30,5 @@ namespace SapphireApiFramework
         public bool isBankCardIssuer;
         public bool isNonFinancialCardIssuer;
         public string iconUrl;
-    }
+    }*/
 }
