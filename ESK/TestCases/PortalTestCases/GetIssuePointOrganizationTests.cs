@@ -11,7 +11,7 @@ namespace SapphireApiFramework
         [TestCase(TestName = "200, Œ ")]
         public void ResponseCodeIs200()
         {
-            var callData = new EndpointCallData(Enviroment, Auth);
+            var callData = new PortalEndpointData(Enviroment, Auth);
             var response = GetIssuePointOrganizations(callData);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

@@ -45,9 +45,9 @@ namespace SapphireApiFramework
                 }
             };
 
-            var callData = new EndpointCallData(payload, Enviroment, Auth);
-
+            var callData = new PortalEndpointData(payload, Enviroment, Auth);
             var response = PostRegisterClient(callData);
+
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }

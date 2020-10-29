@@ -28,7 +28,7 @@ namespace SapphireApiFramework
                 {"file[]", @"C:\FileUpload\feedbackuplaod\Harvey Excel 1.pdf"}
             };
 
-            var callData = new EndpointCallData(parameters, files, Enviroment, Auth);
+            var callData = new PortalEndpointData(parameters, files, Enviroment, Auth);
 
             var response = PostFeedback(callData);
 
@@ -49,7 +49,7 @@ namespace SapphireApiFramework
                 {"email","adc@atlas.com"}
             };
 
-            var callData = new EndpointCallData(parameters, Enviroment, Auth);
+            var callData = new PortalEndpointData(parameters, Enviroment, Auth);
 
             var response = PostFeedback(callData);
 

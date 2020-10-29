@@ -11,7 +11,7 @@ namespace SapphireApiFramework
         [TestCase(TestName = "200, Файл загружен")]
         public void ResponseCodeIs200()
         {
-            var callData = new EndpointCallData("?uid=", "d1098f29-8fae-47b1-a777-71a800dc85f8", Enviroment, Auth);
+            var callData = new PortalEndpointData("?uid=", "d1098f29-8fae-47b1-a777-71a800dc85f8", Enviroment, Auth);
             var response = GetFile(callData);
  
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

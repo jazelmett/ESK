@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SapphireApiFramework
 {
-   /* class IssuePointsJson
+    class IssuePointsJson
     {
         public string id;
         public string name;
@@ -30,5 +30,5 @@ namespace SapphireApiFramework
         public bool isBankCardIssuer;
         public bool isNonFinancialCardIssuer;
         public string iconUrl;
-    }*/
+    }
 }

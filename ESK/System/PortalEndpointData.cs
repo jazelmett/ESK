@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SapphireApiFramework
@@ -22,31 +24,32 @@ namespace SapphireApiFramework
 
     public enum AuthTokens
     {
-        portalFive = 5
+        portalFive = 5,
+        sbsApi = 1
     }
 
-    public class EndpointCallData
+    public class PortalEndpointData
     {
-        public EndpointCallData() { }
-        public EndpointCallData
+        public PortalEndpointData() { }
+        public PortalEndpointData
             (AuthTokens authValue)
         {
             AuthValue = (int)authValue;
         }
 
-        public EndpointCallData
+        public PortalEndpointData
             (Enviroment baseUrl)
         {
             BaseAddress = (int)baseUrl;
         }
 
-        public EndpointCallData
+        public PortalEndpointData
             (Enviroment baseUrl, AuthTokens authValue)
         {
             BaseAddress = (int)baseUrl;
             AuthValue = (int)authValue;
         }
-        public EndpointCallData
+        public PortalEndpointData
             (string uidParam,
             Enviroment baseUrl, AuthTokens authValue)
         {
@@ -55,7 +58,7 @@ namespace SapphireApiFramework
             UidParam = uidParam;
         }
 
-        public EndpointCallData
+        public PortalEndpointData
             (string uidParam, int uidValue,
             Enviroment baseUrl, AuthTokens authValue)
         {
@@ -65,7 +68,7 @@ namespace SapphireApiFramework
             UidValue = uidValue;
         }
 
-        public EndpointCallData
+        public PortalEndpointData
             (string uidParam, string getFileUid,
             Enviroment baseUrl, AuthTokens authValue)
         {
@@ -75,7 +78,7 @@ namespace SapphireApiFramework
             UidParam = uidParam;
         }
 
-        public EndpointCallData
+        public PortalEndpointData
             (object requestBody,
             Enviroment baseUrl, AuthTokens authValue)
         {
@@ -84,7 +87,7 @@ namespace SapphireApiFramework
             RequestBody = requestBody;
         }
 
-        public EndpointCallData
+        public PortalEndpointData
             (Dictionary<string, string> bodyParams,
             Enviroment baseUrl, AuthTokens authValue)
         {
@@ -93,7 +96,7 @@ namespace SapphireApiFramework
             BodyParams = bodyParams;
         }
 
-        public EndpointCallData
+        public PortalEndpointData
             (Dictionary<string, string> bodyParams, Dictionary<string, string> filePath,
             Enviroment baseUrl, AuthTokens authValue)
         {
@@ -104,19 +107,18 @@ namespace SapphireApiFramework
         }
 
         protected static IRestResponse GetRequestInit
-            (EndpointCallData callParams, Method httpMethod, string relativeAddress)
+            (PortalEndpointData callParams, Method httpMethod, string relativeAddress)
         {
             var api = new RestClient(callParams.baseAddress);
             var request = new RestRequest(relativeAddress, httpMethod);
             request.AddHeader("Authorization", callParams.authValue);
             var response = api.Execute(request);
-            Console.Out.WriteLine(ResponseInfo(response));
-            Console.Out.WriteLine(response.Content);
+            RequestsInfo(request, response);
             return response;
         }
 
         protected static IRestResponse PostRequestInitWithBody
-            (EndpointCallData callParams, Method httpMethod, string relativeAddress, object jsonBody)
+            (PortalEndpointData callParams, Method httpMethod, string relativeAddress, object jsonBody)
         {
             var api = new RestClient(callParams.baseAddress);
             var request = new RestRequest(relativeAddress, httpMethod);
@@ -124,13 +126,12 @@ namespace SapphireApiFramework
             request.AddHeader("Content-Type", "application/json");
             request.AddJsonBody(jsonBody);
             var response = api.Execute(request);
-            Console.Out.WriteLine(ResponseInfo(response));
-            Console.Out.WriteLine(response.Content);
+            RequestsInfo(request, response);
             return response;
         }
 
-        protected static IRestResponse PostRequestInitWithParamAndFile
-            (EndpointCallData callParams, Method httpMethod, string relativeAddress,
+        protected static IRestResponse PostRequestInitWithParamsAndFile
+            (PortalEndpointData callParams, Method httpMethod, string relativeAddress,
             Dictionary<string, string> parameters, Dictionary<string, string> filePaths)
         {
             var api = new RestClient(callParams.baseAddress);
@@ -139,13 +140,26 @@ namespace SapphireApiFramework
             foreach (var parameter in parameters) request.AddParameter(parameter.Key, parameter.Value);
             foreach (var path in filePaths) request.AddFile(path.Key, path.Value);
             var response = api.Execute(request);
-            Console.Out.WriteLine(ResponseInfo(response));
-            Console.Out.WriteLine(response.Content);
+            RequestsInfo(request, response);
+            return response;
+        }
+
+        protected static IRestResponse PostRequestInitWithFileNoMultipart
+            (PortalEndpointData callParams, Method httpMethod, string relativeAddress, Dictionary<string, string> filePaths)
+        {
+            var api = new RestClient(callParams.baseAddress);
+            var request = new RestRequest(relativeAddress, httpMethod);
+
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Authorization", callParams.authValue);
+            foreach (var path in filePaths) request.AddFile(path.Key, path.Value);
+            var response = api.Execute(request);
+            RequestsInfo(request, response);
             return response;
         }
 
         protected static IRestResponse PostRequestInitWithParams
-            (EndpointCallData callParams, Method httpMethod, string relativeAddress, 
+            (PortalEndpointData callParams, Method httpMethod, string relativeAddress,
             Dictionary<string, string> parameters)
         {
             var api = new RestClient(callParams.baseAddress);
@@ -153,8 +167,7 @@ namespace SapphireApiFramework
             request.AddHeader("Authorization", callParams.authValue);
             foreach (var parameter in parameters) request.AddParameter(parameter.Key, parameter.Value);
             var response = api.Execute(request);
-            Console.Out.WriteLine(ResponseInfo(response));
-            Console.Out.WriteLine(response.Content);
+            RequestsInfo(request, response);
             return response;
         }
 
@@ -173,28 +186,33 @@ namespace SapphireApiFramework
             Console.Out.WriteLine("Файл сохранен.");
         }
 
-        public static string ResponseInfo(IRestResponse response)
+        public static void RequestsInfo(RestRequest request, IRestResponse response)
         {
-            return
-
-                $"Endpoint: {response.Request.Method} {response.Request.Resource}" +
-                $"\nURL: {response.ResponseUri}" +
+            Console.Out.WriteLine("======================================================");
+            Console.WriteLine   
+                ($"Endpoint: {request.Method} {request.Resource}" +
                 $"\nResponse Message: {(int)response.StatusCode} {response.StatusDescription}" +
-                $"\nReponse Content-Type: {response.ContentType}";
+                $"\nURL: {response.ResponseUri}");
+
+            foreach (var param in request.Parameters) Console.Out.WriteLine(param);
+
+            Console.Out.WriteLine("======================================================");
+            Console.Out.WriteLine(response.Content);
         }
 
         public const string bankStage = "http://webservice.uralsoccard.ru:9696/IP/API/1_0/";
         public const string portalStage = "http://webservice.uralsoccard.ru:9698/IP/API/1_0/";
         public const string acceptorStage = "http://webservice.uralsoccard.ru:9695/IP/API/1_0/";
-        public const string sbussStage = "http://webservice.uralsoccard.ru:9695/IP/API/1_0/";
+        public const string sbsStage = "http://webservice.uralsoccard.ru:9695/SBS/API/1_0/";
         public const string lkStage = "http://webservice.uralsoccard.ru:9697/IP/API/1_0/";
         public const string bankTest = "http://test-esk-api.nposapfir.ru:17065/IP/API/1_0/";
         public const string portalTest = "http://webservice.uralsoccard.ru:17055/IP/API/1_0/";
         public const string acceptorTest = "http://test-esk-api.nposapfir.ru:17075/IP/API/1_0/";
-        public const string sbussTest = "http://test-esk-api.nposapfir.ru:17105/IP/API/1_0/";
+        public const string sbsTest = "http://test-esk-api.nposapfir.ru:17105/SBS/API/1_0/";
         public const string lkTest = "not implemented";
 
         public const string portalFive = "4493ed42-a53d-4e61-8601-4e3c0ecb215a";
+        public const string sbsApi = "47897c5d-918c-4d9a-9380-5ea7d1fcdb34";
 
         public string FileKeyName { get; set; }
         public object RequestBody { get; set; }
@@ -206,7 +224,14 @@ namespace SapphireApiFramework
         public Dictionary<string, string> BodyParams { get; set; }
 
         private string authValue;
-        public int AuthValue { set { if (value == 5) authValue = portalFive; } }
+        public int AuthValue
+        {
+            set
+            {
+                if (value == 5) authValue = portalFive;
+                if (value == 1) authValue = sbsApi;
+            }
+        }
 
         private string baseAddress;
         public int BaseAddress
@@ -216,12 +241,12 @@ namespace SapphireApiFramework
                 if (value == 0) baseAddress = bankStage;
                 if (value == 1) baseAddress = portalStage;
                 if (value == 2) baseAddress = acceptorStage;
-                if (value == 3) baseAddress = sbussStage;
+                if (value == 3) baseAddress = sbsStage;
                 if (value == 4) baseAddress = lkStage;
                 if (value == 5) baseAddress = bankTest;
                 if (value == 6) baseAddress = portalTest;
                 if (value == 7) baseAddress = acceptorTest;
-                if (value == 8) baseAddress = sbussTest;
+                if (value == 8) baseAddress = sbsTest;
                 if (value == 9) baseAddress = lkTest;
             }
         }

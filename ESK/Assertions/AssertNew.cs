@@ -15,19 +15,17 @@ namespace SapphireApiFramework
             var jObject = JObject.Parse(jArray[0].ToString());
             return jObject.GetValue("code").ToString();
         }
-        public static string ParseArrayResponseMessage(IRestResponse response)
-        {
+        public static string ParseArrayResponseMessage(IRestResponse response){
             var jArray = JArray.Parse(response.Content);
             var jObject = JObject.Parse(jArray[0].ToString());
-
             return jObject.GetValue("message").ToString();
-        }
+}
 
         public static bool IsResponseInArray(IRestResponse response)
         {
             try
             {
-                var jArray = JArray.Parse(response.Content);
+                JArray.Parse(response.Content);
                 return true;
             }
             catch(Exception)
