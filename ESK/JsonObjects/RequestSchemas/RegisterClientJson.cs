@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Systems
 {
     public class RegisterClientJson
     {
@@ -44,4 +44,5 @@ namespace SapphireApiFramework
     }
 }
 
-      
+
+

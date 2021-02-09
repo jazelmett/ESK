@@ -5,9 +5,9 @@ using System.IO;
 using System.Threading.Tasks;
 
 
-namespace SapphireApiFramework
+namespace Framework.Api.Systems
 {
-    class SbsEndpointData : PortalEndpointData
+    class SbsEndpointData : BaseEndpointData
     {
         public SbsEndpointData(Dictionary<string, string> filePath, Enviroment baseUrl, AuthTokens authValue)
         {

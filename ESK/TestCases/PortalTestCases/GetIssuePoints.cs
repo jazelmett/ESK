@@ -6,20 +6,21 @@ using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using System;
 using Newtonsoft.Json.Linq;
+using Framework.Api.Systems;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Portal
 {
     [Parallelizable(ParallelScope.All)]
-    public class GetIssuePointsTests : PortalEndpoints
+    public class GetIssuePoints : PortalEndpoints
     {
         [TestCase(TestName = "200, ОК")]
         public void ResponseCodeIs200()
         {
-            var callData = new PortalEndpointData("?uid=", 5, Enviroment, Auth);
+            var callData = new PortalEndpointData(OptionalParam.uid, "5", Enviroment, Auth);
             var response = GetIssuePoints(callData);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            AssertNew.IsResponseInArray(response);
+            Assertions.IsResponseInArray(response);
 /*
             JSchemaGenerator generator = new JSchemaGenerator();
             {
@@ -39,14 +40,14 @@ namespace SapphireApiFramework
         [TestCase(TestName = "400, Отсутствует Организация с указанным идентификатором")]
         public void SpeicifiedOrgIsNotPresent()
         {
-            var callData = new PortalEndpointData("?uid=", 2, Enviroment, Auth);
+            var callData = new PortalEndpointData(OptionalParam.uid, "2", Enviroment, Auth);
 
             var response = GetIssuePoints(callData);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-            AssertNew.IsResponseInArray(response);
-            Assert.AreEqual("1", AssertNew.ParseArrayResponseCode(response));
-            Assert.AreEqual("Отсутствует Организация с указанным идентификатором", AssertNew.ParseArrayResponseMessage(response));
+            Assertions.IsResponseInArray(response);
+            Assert.AreEqual("1", Assertions.ParseArrayResponseCode(response));
+            Assert.AreEqual("Отсутствует Организация с указанным идентификатором", Assertions.ParseArrayResponseMessage(response));
         }
 
         [TestCase(TestName = "400, Отсутствует ?uid= и значение uid")]

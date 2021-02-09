@@ -1,14 +1,11 @@
 ﻿using NUnit.Framework;
-using System.Net;
-using System.Runtime.CompilerServices;
-using Newtonsoft;
-using Newtonsoft.Json.Schema;
-using Newtonsoft.Json.Schema.Generation;
 using System;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using Framework.Api.Systems;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Sbs
 {
     [Parallelizable(ParallelScope.All)]
     class PostRegisterTransactions : SbsEndpoints
@@ -27,6 +24,7 @@ namespace SapphireApiFramework
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
+
 
         [TestCase(TestName = "200, Zip")]
         public void ResponseCodeis200ZipUpload()

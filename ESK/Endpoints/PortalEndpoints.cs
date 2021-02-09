@@ -2,7 +2,7 @@
 using RestSharp;
 using System.Threading.Tasks;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Systems
 {
     public class PortalEndpoints : PortalEndpointData
     {
@@ -14,22 +14,22 @@ namespace SapphireApiFramework
 
         public IRestResponse GetIssuePoints(PortalEndpointData callParams)
         {
-            if (callParams.UidValue == 0)
+            if (callParams.OptParamValue == null)
                 return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}");
-            else if (callParams.UidValue == 0 && callParams.UidParam == null)
+            else if (callParams.OptParamValue == null && callParams.UidParam == null)
                 return GetRequestInit(callParams, Method.GET, $"IssuePoints");
             else
-                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.UidValue}");
+                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.OptParamValue}");
         }
 
         public IRestResponse GetListAcceptors(PortalEndpointData callParams)
             => GetRequestInit(callParams, Method.GET, "ListAcceptors");
 
         public IRestResponse GetAcceptorBranches(PortalEndpointData callParams)
-            => GetRequestInit(callParams, Method.GET, $"AcceptorBranches{callParams.UidParam}{callParams.UidValue}");
+            => GetRequestInit(callParams, Method.GET, $"AcceptorBranches{callParams.UidParam}{callParams.OptParamValue}");
 
         public IRestResponse GetLoyaltyProgramBranches(PortalEndpointData callParams)
-            => GetRequestInit(callParams, Method.GET, $"LoyaltyProgramBranches{callParams.UidParam}{callParams.UidValue}");
+            => GetRequestInit(callParams, Method.GET, $"LoyaltyProgramBranches{callParams.UidParam}{callParams.OptParamValue}");
 
         public IRestResponse GetListLoyaltyPrograms(PortalEndpointData callParams)
             => GetRequestInit(callParams, Method.GET, $"ListLoyaltyPrograms");
@@ -72,5 +72,7 @@ namespace SapphireApiFramework
 
         public IRestResponse PostRegisterClient(PortalEndpointData callParams)
             => PostRequestInitWithBody(callParams, Method.POST, "RegisterClient", callParams.RequestBody);
+
+
     }
 }

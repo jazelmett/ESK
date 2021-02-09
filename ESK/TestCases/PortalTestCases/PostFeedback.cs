@@ -1,13 +1,14 @@
-﻿using System.Net;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using RestSharp;
+using System.Net;
+using System.Text;
+using Framework.Api.Systems;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Portal
 {
     [Parallelizable(ParallelScope.All)]
-    class PostFeedbackTests : PortalEndpoints
+    class PostFeedback : PortalEndpoints
     {
         [TestCase(TestName = "400, Размер файла > 14mb")]
         public void ResponseCodeIs400WithLargeFile()

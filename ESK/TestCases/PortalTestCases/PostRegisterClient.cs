@@ -1,10 +1,8 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Schema;
-using Newtonsoft.Json.Schema.Generation;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using System.Net;
+using Framework.Api.Systems;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Portal
 {
     [Parallelizable(ParallelScope.All)]
     class PostRegisterClient : PortalEndpoints
@@ -17,7 +15,7 @@ namespace SapphireApiFramework
                 firstName = "Тестов",
                 lastName = "Тест",
                 middleName = "Тестович",
-                birthDate = "01.01.2018",
+                birthDate = "11.07.2018",
                 birthPlace = "Свердловская обл. г. Екатеринбург",
                 sex = 1,
                 contacts = new Contacts
@@ -45,9 +43,13 @@ namespace SapphireApiFramework
                 }
             };
 
+            payload.contacts.mobilePhone = "+79995196919";
+            payload.contacts.email = "testmail10@atlas.com";
+            payload.docs.passport.num = "8748345672";
+            payload.docs.snils = "11809469473";
+
             var callData = new PortalEndpointData(payload, Enviroment, Auth);
             var response = PostRegisterClient(callData);
-
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }

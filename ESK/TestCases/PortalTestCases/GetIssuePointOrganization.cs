@@ -1,12 +1,14 @@
 using NUnit.Framework;
-using RestSharp;
+using System;
+using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
+using System.Text;
+using Framework.Api.Systems;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Portal
 {
     [Parallelizable(ParallelScope.All)]
-    public class GetIssuePointOrganizationTests : PortalEndpoints
+    public class GetIssuePointOrganization : PortalEndpoints
     {
         [TestCase(TestName = "200, Œ ")]
         public void ResponseCodeIs200()

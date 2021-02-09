@@ -5,9 +5,9 @@ using System;
 using System.Net;
 using System.Runtime.CompilerServices;
 
-namespace SapphireApiFramework
+namespace Framework.Api.Systems
 {
-    static class AssertNew
+    static class Assertions
     {
         public static string ParseArrayResponseCode(IRestResponse response)
         {
@@ -15,29 +15,25 @@ namespace SapphireApiFramework
             var jObject = JObject.Parse(jArray[0].ToString());
             return jObject.GetValue("code").ToString();
         }
-        public static string ParseArrayResponseMessage(IRestResponse response){
+        public static string ParseArrayResponseMessage(IRestResponse response)
+        {
             var jArray = JArray.Parse(response.Content);
             var jObject = JObject.Parse(jArray[0].ToString());
             return jObject.GetValue("message").ToString();
-}
+        }
 
         public static bool IsResponseInArray(IRestResponse response)
         {
             try
             {
+           
                 JArray.Parse(response.Content);
                 return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
-        }
-
-        public static void JsonSchemaValidation()
-        {
-
-
         }
     }
 }
