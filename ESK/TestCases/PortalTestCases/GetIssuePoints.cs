@@ -16,31 +16,31 @@ namespace Framework.Api.Portal
         [TestCase(TestName = "200, ОК")]
         public void ResponseCodeIs200()
         {
-            var callData = new PortalEndpointData(OptionalParam.uid, "5", Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth, OptionalParam.uid, "5");
             var response = GetIssuePoints(callData);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assertions.IsResponseInArray(response);
-/*
-            JSchemaGenerator generator = new JSchemaGenerator();
-            {
-                generator.SchemaLocationHandling = SchemaLocationHandling.Inline;
-            }
+            /*
+                        JSchemaGenerator generator = new JSchemaGenerator();
+                        {
+                            generator.SchemaLocationHandling = SchemaLocationHandling.Inline;
+                        }
 
-            JSchema expectedJsonSchema = generator.Generate(typeof(IssuePointsJson));
+                        JSchema expectedJsonSchema = generator.Generate(typeof(IssuePointsJson));
 
-            JArray parsedArray = JArray.Parse(response.Content);
-            JObject actualJsonSchema = JObject.Parse(parsedArray[0].ToString());
+                        JArray parsedArray = JArray.Parse(response.Content);
+                        JObject actualJsonSchema = JObject.Parse(parsedArray[0].ToString());
 
-            var isValid = parsedArray.IsValid(expectedJsonSchema);
+                        var isValid = parsedArray.IsValid(expectedJsonSchema);
 
-            Assert.AreEqual(expectedJsonSchema, parsedArray);*/
+                        Assert.AreEqual(expectedJsonSchema, parsedArray);*/
         }
 
         [TestCase(TestName = "400, Отсутствует Организация с указанным идентификатором")]
         public void SpeicifiedOrgIsNotPresent()
         {
-            var callData = new PortalEndpointData(OptionalParam.uid, "2", Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth, OptionalParam.uid, "2");
 
             var response = GetIssuePoints(callData);
 
@@ -53,7 +53,7 @@ namespace Framework.Api.Portal
         [TestCase(TestName = "400, Отсутствует ?uid= и значение uid")]
         public void NoUidParam()
         {
-            var callData = new PortalEndpointData(Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth);
             var response = GetIssuePoints(callData);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
@@ -62,7 +62,7 @@ namespace Framework.Api.Portal
         [TestCase(TestName = "400, Отсутствует значение uid")]
         public void NoUidValue()
         {
-            var callData = new PortalEndpointData("?uid=", Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth, OptionalParam.uid);
             var response = GetIssuePoints(callData);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);

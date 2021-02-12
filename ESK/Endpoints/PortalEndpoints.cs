@@ -4,65 +4,65 @@ using System.Threading.Tasks;
 
 namespace Framework.Api.Systems
 {
-    public class PortalEndpoints : PortalEndpointData
+    public class PortalEndpoints : PortalData
     {
         public Enviroment Enviroment = Enviroment.portalStage;
         public AuthTokens Auth = AuthTokens.portalFive;
 
-        public IRestResponse GetIssuePointOrganizations(PortalEndpointData callParams)
+        public IRestResponse GetIssuePointOrganizations(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "IssuePointOrganizations");
 
-        public IRestResponse GetIssuePoints(PortalEndpointData callParams)
+        public IRestResponse GetIssuePoints(PortalData callParams)
         {
             if (callParams.OptParamValue == null)
-                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}");
-            else if (callParams.OptParamValue == null && callParams.UidParam == null)
+                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.OptParam}");
+            else if (callParams.OptParamValue == null && callParams.OptParam == null)
                 return GetRequestInit(callParams, Method.GET, $"IssuePoints");
             else
-                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.UidParam}{callParams.OptParamValue}");
+                return GetRequestInit(callParams, Method.GET, $"IssuePoints{callParams.OptParam}{callParams.OptParamValue}");
         }
 
-        public IRestResponse GetListAcceptors(PortalEndpointData callParams)
+        public IRestResponse GetListAcceptors(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "ListAcceptors");
 
-        public IRestResponse GetAcceptorBranches(PortalEndpointData callParams)
-            => GetRequestInit(callParams, Method.GET, $"AcceptorBranches{callParams.UidParam}{callParams.OptParamValue}");
+        public IRestResponse GetAcceptorBranches(PortalData callParams)
+            => GetRequestInit(callParams, Method.GET, $"AcceptorBranches{callParams.OptParam}{callParams.OptParamValue}");
 
-        public IRestResponse GetLoyaltyProgramBranches(PortalEndpointData callParams)
-            => GetRequestInit(callParams, Method.GET, $"LoyaltyProgramBranches{callParams.UidParam}{callParams.OptParamValue}");
+        public IRestResponse GetLoyaltyProgramBranches(PortalData callParams)
+            => GetRequestInit(callParams, Method.GET, $"LoyaltyProgramBranches{callParams.OptParam}{callParams.OptParamValue}");
 
-        public IRestResponse GetListLoyaltyPrograms(PortalEndpointData callParams)
+        public IRestResponse GetListLoyaltyPrograms(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, $"ListLoyaltyPrograms");
 
-        public IRestResponse GetListLocalitites(PortalEndpointData callParams)
+        public IRestResponse GetListLocalitites(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "ListLocalities");
 
-        public IRestResponse GetListAcceptorCategories(PortalEndpointData callParams)
+        public IRestResponse GetListAcceptorCategories(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "ListAcceptorCategories");
 
-        public IRestResponse GetKeyPartners(PortalEndpointData callParams)
+        public IRestResponse GetKeyPartners(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "KeyPartners");
 
-        public IRestResponse GetListFeedbackThemes(PortalEndpointData callParams)
+        public IRestResponse GetListFeedbackThemes(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "ListFeedbackThemes");
 
-        public IRestResponse GetListStatePrograms(PortalEndpointData callParams)
+        public IRestResponse GetListStatePrograms(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "ListStatePrograms");
 
-        public IRestResponse GetListStateAssignments(PortalEndpointData callParams)
+        public IRestResponse GetListStateAssignments(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "ListStateAssignments");
 
-        public IRestResponse GetListExpenseLiabilities(PortalEndpointData callParams)
+        public IRestResponse GetListExpenseLiabilities(PortalData callParams)
             => GetRequestInit(callParams, Method.GET, "ListStateAssignments");
 
-        public IRestResponse GetFile(PortalEndpointData callParams)
+        public IRestResponse GetFile(PortalData callParams)
         {
-            var response = GetRequestInit(callParams, Method.GET, $"File{callParams.UidParam}{callParams.GetFileUid}");
+            var response = GetRequestInit(callParams, Method.GET, $"File{callParams.OptParam}{callParams.OptParamValue}");
             SaveResponseToFile(response);
             return response;
         }
 
-        public IRestResponse PostFeedback(PortalEndpointData callParams)
+        public IRestResponse PostFeedback(PortalData callParams)
         {
             if (callParams.FilePath == null)
                 return PostRequestInitWithParams(callParams, Method.POST, "Feedback", callParams.BodyParams);
@@ -70,8 +70,8 @@ namespace Framework.Api.Systems
                 return PostRequestInitWithParamsAndFile(callParams, Method.POST, "Feedback", callParams.BodyParams, callParams.FilePath);
         }
 
-        public IRestResponse PostRegisterClient(PortalEndpointData callParams)
-            => PostRequestInitWithBody(callParams, Method.POST, "RegisterClient", callParams.RequestBody);
+        public IRestResponse PostRegisterClient(PortalData callParams)
+            => PostRequestInitWithBody(callParams, Method.POST, "RegisterClient", callParams.RequestContents);
 
 
     }

@@ -5,18 +5,22 @@ using System.Text;
 
 namespace Framework.Api.Systems
 {
-    class SbsEndpoints : BaseEndpointData
+    class SbsEndpoints : BaseData
     {
-        public Enviroment Enviroment = Enviroment.sbussStage;
+        public Enviroment Enviroment = Enviroment.sbsStage;
         public AuthTokens Auth = AuthTokens.sbsApi;
 
-        public IRestResponse GetCheckActiveCard(SbsEndpointData callParams)
-            => GetRequestInit(callParams, Method.GET, $"CheckActiveCard{callParams.UidParam}{callParams.OptParamValue}");
+        public IRestResponse GetCheckActiveCard(SbsData callParams)
+            => GetRequestInit(callParams, Method.GET, $"CheckActiveCard{callParams.OptParam}{callParams.OptParamValue}");
 
-        public IRestResponse PostCancelTransactions(SbsEndpointData callParams)
-            => PostRequestInitWithBody(callParams, Method.POST, "RegisterClient", callParams.RequestBody);
+        public IRestResponse PostCancelTransactions(SbsData callParams)
+            => PostRequestInitWithBody(callParams, Method.POST, "CancelTransactions", callParams.RequestContents);
 
-        public IRestResponse PostRegisterTransactions(SbsEndpointData callParams)
-            => PostRequestInitWithFileNoMultipart(callParams, Method.POST, "RegisterTransactions", callParams.FilePath);
+        public IRestResponse PostRegisterTransactions(SbsData<Dictionary<string, string>> callParams) 
+            => PostRequestInitFileMultipart(callParams, Method.POST, "RegisterTransactions", callParams.ObjectToSend);
+
+        public IRestResponse PostRegisterTransactions(SbsData<List<RegisterTransactionsJson>> callParams) 
+            => PostRequestInitWithBody(callParams, Method.POST, "RegisterTransactions", callParams.ObjectToSend);
+
     }
 }

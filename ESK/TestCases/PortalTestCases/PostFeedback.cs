@@ -29,7 +29,7 @@ namespace Framework.Api.Portal
                 {"file[]", @"C:\FileUpload\feedbackuplaod\Harvey Excel 1.pdf"}
             };
 
-            var callData = new PortalEndpointData(parameters, files, Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth, parameters, files);
 
             var response = PostFeedback(callData);
 
@@ -50,7 +50,7 @@ namespace Framework.Api.Portal
                 {"email","adc@atlas.com"}
             };
 
-            var callData = new PortalEndpointData(parameters, Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth, parameters);
 
             var response = PostFeedback(callData);
 

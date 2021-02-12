@@ -48,7 +48,7 @@ namespace Framework.Api.Portal
             payload.docs.passport.num = "8748345672";
             payload.docs.snils = "11809469473";
 
-            var callData = new PortalEndpointData(payload, Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth, payload);
             var response = PostRegisterClient(callData);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);

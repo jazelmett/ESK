@@ -13,7 +13,7 @@ namespace Framework.Api.Portal
         [TestCase(TestName = "200, Œ ")]
         public void ResponseCodeIs200()
         {
-            var callData = new PortalEndpointData(Enviroment, Auth);
+            var callData = new PortalData(Enviroment, Auth);
             var response = GetIssuePointOrganizations(callData);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

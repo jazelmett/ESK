@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Framework.Api.Systems
 {
-    class IssuePointsJson
+    public class IssuePointsJson
     {
         public string id;
         public string name;
@@ -17,13 +17,13 @@ namespace Framework.Api.Systems
         public Organization organization;
     }
 
-    class Geolocation
+    public class Geolocation
     {
         public Point x;
         public Point y;
     }
 
-    class Organization
+    public class Organization
     {
         public int id;
         public string name;
