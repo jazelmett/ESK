@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Framework.Api.Systems
 {
-    public class RegisterTransactionsJson
+    public class RegisterTransactionsJson1
     {
         public string id;
         public string UID;
